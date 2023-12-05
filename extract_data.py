@@ -2,7 +2,7 @@ import pandas as pd
 from sodapy import Socrata
 
 data_url = 'data.cityofnewyork.us'
-app_token = 'ADD APP TOKEN HERE'
+app_token = 'P6aMTgXXbSq4qlMfdjZTfZcdq'
 client = Socrata(data_url, app_token)
 client.timeout = 600
 

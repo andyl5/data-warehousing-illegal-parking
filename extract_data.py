@@ -1,12 +1,15 @@
 import pandas as pd
 from sodapy import Socrata
+from dotenv import load_dotenv
+import os
 
+load_dotenv()  # take environment variables from .env.
 data_url = 'data.cityofnewyork.us'
-app_token = 'P6aMTgXXbSq4qlMfdjZTfZcdq'
+app_token = os.getenv('APP_TOKEN')
 client = Socrata(data_url, app_token)
 client.timeout = 600
 
-# # 311 dataset
+# 311 dataset
 for year in range(2021, 2024):
     start = 0
     chunk_size = 2000
@@ -20,8 +23,13 @@ for year in range(2021, 2024):
         start += chunk_size
         if (start > int(record_count[0]['COUNT'])):
             break
+        
     df = pd.DataFrame.from_records(results)
+    if year == 2023:
+        df.drop('vehicle_type', axis=1, inplace=True)
     df.to_csv(f'data/311_illegal_parking_complaints_{year}.csv', index=False)
+
+
 
 
 # Open Parking dataset
